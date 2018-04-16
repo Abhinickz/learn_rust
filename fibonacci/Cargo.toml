@@ -1,0 +1,8 @@
+[package]
+name = "fibonacci"
+version = "0.0.1"
+authors = ["Abhishek Bhasker <abhinickz6@gmail.com>"]
+
+[dependencies]
+cached = "*"
+lazy_static = "*"
