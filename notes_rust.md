@@ -1,3 +1,6 @@
+
+```rust
+
 Rust Notes:
 
 $ sudo /home/abhasker/.cargo/bin/cargo update
@@ -492,3 +495,4 @@ Continue with Page : 61
 
 
 
+```
