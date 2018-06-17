@@ -26,13 +26,13 @@ let mut bar = 5;	// mutable variable comment
 #	Otherwise use to call function io::stdin()
 use std::io;
 OR
-std::io::stdin 
+std::io::stdin
 
 #	use in Rust: works just like Perl, we can use it anywhere.
 #	Ordering of this line will not matter just like print Dumper($var); use Data::Dumper;
 
 #	The & indicates that this argument is a reference, which gives you a way to let multiple parts
-#	of your code access one piece of data without needing to copy that data into memory multiple times. 
+#	of your code access one piece of data without needing to copy that data into memory multiple times.
 
 # Read from Terminal contains newline char.
 io::stdin()
@@ -41,7 +41,7 @@ io::stdin()
 OR
 io::stdin().read_line(&mut guess).expect("Failed to read line");
 
-#	read_line puts what the user types into the string we’re passing it, but it also returns a value—in this case, 
+#	read_line puts what the user types into the string we’re passing it, but it also returns a value—in this case,
 #	an io::Result. Rust has a number of types named. Result in its standard library: a generic Result as well as specic
 #	versions for submodules, such as io::Result.
 
@@ -67,11 +67,11 @@ You guessed: 5
 #	crate is a package of Rust code.
 #	The rand crate is a library crate, which contains code intended to be used in other programs.
 
-Filename: Cargo.toml 
-[dependencies] 
+Filename: Cargo.toml
+[dependencies]
 rand = "0.3.14"
 OR
-rand = "0.*"	// Install latest rand crate.
+rand = "0.*"	// Install latest rand crate automatically.
 
 $ cargo build
 Updating registry `https://github.com/rust-lang/crates.io-index`
@@ -134,7 +134,7 @@ match guess.cmp(&secret_number) {		// &secret_number refers to secret_number ref
 #	The cmp method compares two values and can be called on anything that can be compared.
 #	It takes a reference to whatever you want to compare with: here it’s comparing the guess to the secret_number.
 #	Then it returns a variant of the Ordering enum we brought into scope with the use statement.
-#	We use a match expression to decide what to do next based on which variant of Ordering was returned 
+#	We use a match expression to decide what to do next based on which variant of Ordering was returned
 #	from the call to cmp with the values in guess and secret_number.
 
 #	Interger Constraint on guess input, Otherwise will get an error : "Please type a number!"
@@ -142,7 +142,7 @@ let guess: u32 = guess.trim().parse().expect("Please type a number!");
 
 let mut secret_number = String::new();					//	with reference type `&std::string::String`
 let secret_number = "Hello";							//	with reference type `&&str`
- 
+
 ####	Rust Debugging:
 #	As far as debugging goes, a little trick:
 let x = ......; // don't know the type of x
@@ -181,7 +181,7 @@ loop {
 	match guess.cmp(&secret_number) {
 		Ordering::Less => println!("Too small!"),
 		Ordering::Greater => println!("Too big!"),
-		Ordering::Equal => { 
+		Ordering::Equal => {
 			println!("You win!");
 			break;
 		}
@@ -207,7 +207,7 @@ let guess: u32 = match guess.trim().parse() {
 #	Constants can be declared in any scope, including the global scope.
 #	Constants may be set only to a constant expression, not the result of a function call or any other value that could only be computed at runtime.
 
-const PI = 22 / 7;		// OK
+const PI = 22 / 7;		// OK : Constant Expression.
 const mut PI = pi();	// NOT OK: ERROR (Can't use mut keyword with const.)
 const PI = pi();		// NOT OK: ERROR (Only Constant Expression allowed.)
 let const PI = pi();	// NOT OK: ERROR (Can't use let keyword with const.)
@@ -230,13 +230,13 @@ let spaces = " ";
 let spaces = spaces.len();			// Using let again allows us to change the variable type from string to usize here.
 
 #	We aren't allowed to change a mut variable type.
-let mut spaces = " ";			// variable mut spaces type is string here.
+let mut spaces = " ";				// variable mut spaces type is string here.
 let spaces = spaces.len();			// Here we are trying to change this data type usize, It doesn't matter if variable is mutable or not in first case.
 =>	will give error: expected &str, found usize
 
 ##	Data Types:
 
-#	Data type subsets: 
+#	Data type subsets:
 1. Scalar
 2. Compound
 
@@ -284,18 +284,18 @@ let var_float: f32 = 2   / 4.546;	// ERROR : cannot divide `{integer}` by `{floa
 
 
 #	Boolean Type:
-#	The bool represents a value, which could only be either true or false. 
+#	The bool represents a value, which could only be either true or false.
 #	If you cast a bool into an integer, true will be 1 and false will be 0.
 let t = true;
 let f: bool = false; // with explicit type annotation
 
 #	Character Type:
 #	char type is specified with '' single quotes, While String uses "" double quotes.
-let tick = '✔';
+let tick  = '✔';
 let heart = '❤';
 
 #	char type represents a Unicode Scalar Value.
-#	char is a 'Unicode scalar value, which is similar to, but not the same as, a 'Unicode code point'.
+#	char is a Unicode scalar value, which is similar to, but not the same as, a 'Unicode code point'.
 #	Unicode Scalar Values range: U+0000 to U+D7FF && U+E000 to U+10FFFF inclusive.
 
 #	Compound Types:
@@ -329,22 +329,22 @@ let a = [1, 2, 3, 4, 5];
 #	Arrays in Rust are different from arrays in some other languages like perl.
 #	Arrays in Rust have a fixed length: once declared, they cannot grow or shrink in size.
 
-#	Arrays are useful when you want your data allocated on the stack rather than the heap
+#	Arrays are useful when you want your data allocated on the stack rather than the heap (perfomance gain.)
 
 #	Array elements access:
-let first = a[0];
+let first  = a[0];
 let second = a[1];
 
-let index = 10;
+let index   = 10;
 let element = a[index];	// Invalid Memory Access not allowed. Runtime error
 Runtime: ERROR: thread '<main>' panicked at 'index out of bounds: the len is 5 but the index is 10'
 
 #	Functions:
-#	Rust code uses snake case as the conventional style for function and variable names.
+#	Rust code uses snake case (variable_name) as the conventional style for function and variable names.
 
 #	Function Parameters:
 another_function(5, 6);
-fn another_function(x: i32, y: i32) {
+fn another_function(x: i32, y: i32) {	// x type signed interger 32.
 
 #	In function signatures, you must declare the type of each parameter.
 
@@ -366,25 +366,23 @@ let x = (let y = 6); // NOT OK: ERROR: error: expected expression, found stateme
 #	 If you add a semicolon to the end of an expression, you turn it into a statement.
 #	Expressions can be part of statements.
 #	Calling a function is an expression.
-#	Calling a macro is an expression. 
+#	Calling a macro is an expression.
 #	The block that we use to create new scopes, {} , is an expression.
 
 fn main() {
 	let x = 5;
 	let y = {
-		let x = 3;
-		x + 1		// Doesn't include ; at the end, 
-		// y = { } is a expression, evaluates to 4.
-		//  If you add a semicolon to the end of an expression, you turn it into a statement
-	};
+		let x = 3;	// y = { } is a expression, evaluates to 4.
+		x + 1		// Doesn't include ; at the end, so it's an expression not a statement.
+	}; //  If you add a semicolon to the end of an expression, you turn it into a statement.
 	println!("The value of y is: {}", y);
 }
 
 #	Functions with Return Values:
 #	We don’t name return values, but we do declare their type after an arrow ( -> ).
 let x = five();
-fn five() -> i32 {	// fn fn_name() -> data_type { }
-	5	// Without ; returns value.
+fn five() -> i32 {	// fn fn_name() -> return_data_type { }
+	5	// Without ; returns value because of the expression.
 }
 
 #	In Rust, the return value of the function is synonymous with the value of the final expression in the block of the body of a function.
@@ -444,7 +442,7 @@ match x {
 #	This while loop approch here in this case is error prone.
 #	we could cause the program to panic if the index length is incorrect.
 
-#	It’s also slow, because the compiler adds runtime code to perform 
+#	It’s (while?) also slow, because the compiler adds runtime code to perform.
 #	The conditional check on every element on every iteration through the loop.
 
 // while Loop:
@@ -463,19 +461,301 @@ fn main() {
 
 // for Loop:
 fn main() {
-    let a = [10, 20, 30, 40, 50];
+    let a = [10, 20, 30, 40, 50];	// Rust Array type.
 
-    for element in a.iter() {
+    for element in a.iter() {	// Returns a collection.
         println!("the value is: {}", element);
     }
 }
 
 #	Safe Approch:
 #	Run some code certain times approch:
-#	would be to use a Range, which is a type provided by the standard library 
+#	would be to use a Range, which is a type provided by the standard library
 #	that generates all numbers in sequence starting from one number and ending before another number.
 
-Continue with Page : 61
+##	Understanding Ownership
+
+#	Stack:
+#	The stack stores values in the order it gets them and removes the values in the opposite order.
+#	This is referred to as last in, first out.
+#	Adding data is called pushing onto the stack, and removing data is called popping off the stack.
+#	The stack is fast. Heap is Slow. All data on the stack must take up a known, fixed size.
+
+#	Heap:
+#	Data with a size unknown at compile time or a size that might change can be stored on the heap instead.
+
+
+#	Ownership Rules
+
+1. Each value in Rust has a variable that’s called its owner.
+2. There can only be one owner at a time.
+3. When the owner goes out of scope, the value will be dropped.
+
+#	If we want to take user input and store it: use String.
+#	Rust has a second string type: String
+
+let s = String::from("hello");
+
+#	This type is allocated on the heap and as such is able to store an amount of text that is unknown to us at compile time.
+
+#	The double colon ( :: ) is an operator that allows us to namespace this particular from
+#	function under the String type rather than using some sort of name like string_from.
+
+
+#	This kind of string can be mutated:
+let mut s = String::from("hello");
+s.push_str(", world!"); // push_str() appends a literal to a String
+println!("{}", s); // This will print `hello, world!`
+
+
+// Difference between std::string::String & str
+fn main() {
+    let mut s = String::from("hello");  // std::string::String
+    let mut m = "hello";                // str : String literal
+
+    s.push_str(", world!"); // OK
+    m.push_str(", world!"); // ERROR : error[E0599]: no method named `push_str` found for type `&str` in the current scope
+    // Because m type is str & push_str does not works on str.
+
+    println!("s: {}", s);   // OK
+    println!("m: {}", m);   // ERROR
+}
+
+#	Why can String be mutated but Literals cannot?
+--	How these two types deal with memory.
+--	String on Heap, Literals on Stack.
+
+#	drop: When a variable goes out of scope, Rust calls a special function for us. 
+#	This function is called drop.
+
+let s1 = String::from("hello");
+let s2 = s1;
+
+#	Double free error:
+In above code s1 is moved to s2 due to rust out of scope logic,
+Otherwise if s2 = s1 both point to same memory location, rust will try to free the same memory known as Double free error.
+
+#	So, Instead of trying to copy the allocated memory (s2 = s1), Rust considers s1 to no longer be valid.
+#	Therefore, Rust doesn’t need to free anything when s1 goes out of scope.
+
+----------------------------------------------------------------------------------------------------
+error[E0382]: use of moved value: `s1`
+ --> src/main.rs:5:28
+  |
+3 |     let s2 = s1;
+  |         -- value moved here
+4 |
+5 |     println!("{}, world!", s1);
+  |                            ^^ value used here after move
+  |
+  = note: move occurs because `s1` has type `std::string::String`, which does
+  not implement the `Copy` trait
+----------------------------------------------------------------------------------------------------
+
+#	Rust will never automatically create "deep" copies of your data.
+
+#	Ways Variables and Data Interact: Clone:
+
+#	If we do want to deeply copy the heap data of the String, not just the stack data, we can use a common method called clone.
+
+let s1 = String::from("hello");
+let s2 = s1.clone();
+println!("s1 = {}, s2 = {}", s1, s2);
+
+#	Stack-Only Data: Copy:
+let x = 5;
+let y = x;
+println!("x = {}, y = {}", x, y);	//	OK: Because x lives on stack (integers that have a known size at compile time are stored entirely on the stack).
+
+#	traits: more on this later.
+#	Copy: If a type has the Copy trait, an older variable is still usable after assignment.
+#	Drop: Rust won’t let us annotate a type with the Copy trait if the type, or any of its parts, has implemented the Drop trait.
+#	If the type needs something special to happen when the value goes out of scope and we add the Copy annotation to that type.
+
+#	General rule: Any group of simple scalar values can be Copy, and nothing that requires allocation or is some form of resource is Copy. 
+
+#	Here are some of the types that are Copy:
+	#	All the integer types, such as u32.
+	#	The Boolean type, bool, with values true and false.
+	#	All the floating point types, such as f64.
+	#	The character type, char.
+	#	Tuples, but only if they contain types that are also Copy. For example, (i32, i32) is Copy, but (i32, String) is not.
+#
+
+#	Ownership and Functions:
+#	The semantics for passing a value to a function are similar to those for assigning a value to a variable. 
+#	Passing a variable to a function will move or copy, just as assignment does.
+
+#	Meaning by example:
+#	When s is passed on to the function, It goes out of scope, So Ownership works on assigning a value to a variable as well as passing a value to function.
+
+let s = String::from("hello");  // s comes into scope.
+takes_ownership(s);             // s's value moves into the function...
+								// ... and so is no longer valid here.
+println!("{}", s)				// NOT OK
+
+
+#	Return Values and Scope:
+#	Returning values can also transfer ownership.
+
+let s1 = gives_ownership(); // gives_ownership moves its return, value into s1.
+
+fn gives_ownership() -> String {	// gives_ownership will move its, return value into the function that calls it
+    let some_string = String::from("hello"); // some_string comes into scope
+    some_string	// some_string is returned and moves out to the calling function.
+}
+
+#	It’s quite annoying that anything we pass in also needs to be passed back if we want to use it again,
+#	In addition to any data resulting from the body of the function that we might want to return as well.
+
+
+#	Return Multiple Values: from function.
+#	It’s possible to return multiple values using a tuple:
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len(); // len() returns the length of a String
+    (s, length)
+}
+
+#	Too much work: Luckily for us, Rust has a feature for this concept, called references.
+
+
+#	References and Borrowing
+
+#	references:
+#	These ampersands are references, and they allow you to refer to some value without taking ownership of it.
+#	Note: The opposite of referencing by using & is dereferencing, which is accomplished with the dereference operator, *.
+
+let s1 = String::from("hello");
+let s2 = calculate_length(&s1);	// &s1 reference to String Object s1.
+println!("The length of '{}' is {}.", s1, len);	// OK
+
+fn calculate_length(s: &String) -> usize {	// the signature of the function uses & to indicate that the type of the parameter s is a reference.
+    s.len()
+}
+
+#	The &s1 syntax lets us create a reference that refers to the value of s1 but does not own it. 
+#	Because it does not own it, the value it points to will not be dropped when the reference goes out of scope.
+
+
+#	When functions have references as parameters instead of the actual values.
+#	We won’t need to return the values in order to give back ownership, because we never had ownership.
+
+
+#	references as function parameters : borrowing
+
+#	What happens if we try to modify something we’re borrowing?
+	#	It doesn't work. // ERROR : Attempting to modify a borrowed value
+#
+
+#	Just as variables are immutable by default, so are references.
+#	We’re not allowed to modify something we have a reference to.
+
+#	Mutable References:
+change(&s); => change(&mut s); 
+&& 
+fn change(some_string: &String) { => fn change(some_string: &mut String) { to modify the reference value.
+#	First, we had to change s to be mut. Then we had to create a mutable reference with &mut s and accept a mutable reference with some_string: &mut String.
+
+#	But mutable references have one big restriction: you can only have one mutable reference to a particular piece of data in a particular scope.
+
+let mut s = String::from("hello");
+
+let r1 = &mut s;
+let r2 = &mut s;	// NOT OK: ERROR: error[E0499]: cannot borrow `s` as mutable more than once at a time.
+
+#	With the above error : Rust can prevent data races at compile time.
+
+#	 A data race is similar to a race condition and happens when these three behaviors occur:
+	#	Two or more pointers access the same data at the same time.
+	#	At least one of the pointers is being used to write to the data.
+	#	There’s no mechanism being used to synchronize access to the data.
+#
+
+#	we can use curly brackets to create a new scope, allowing for multiple mutable references, just not simultaneous ones:
+let mut s = String::from("hello");
+{
+    let r1 = &mut s;
+} // r1 goes out of scope here, so we can make a new reference with no problems.
+let r2 = &mut s;
+
+#	Dangling References:
+#	A pointer that references a location in memory that may have been given to someone else, by freeing some memory while preserving a pointer to that memory.
+fn dangle() -> &String { // dangle returns a reference to a String
+    let s = String::from("hello"); // s is a new String
+    &s // we return a reference to the String, s
+} // Here, s goes out of scope, and is dropped. Its memory goes away. Danger!
+
+#	The Rules of References
+	#	At any given time, you can have either (but not both of) one mutable reference or any number of immutable references.
+	#	References must always be valid. No dangling.
+#
+
+
+#	The Slice Type
+#	slice data type does not have ownership.
+#	Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection. (Like perl array slice.)
+
+#	String slices Example:
+
+let s = String::from("hello");
+let slice = &s[0..2];	//	Equal
+let slice = &s[..2];	//	Equal
+
+let s = String::from("hello");
+let len = s.len();
+let slice = &s[3..len];	//	Equal
+let slice = &s[3..];	//	Equal
+
+#	You can also drop both values to take a slice of the entire string. So these are equal:
+let s = String::from("hello");
+let len = s.len();
+let slice = &s[0..len];	//	Equal
+let slice = &s[..];		//	Equal
+
+
+#	Other slices example:
+let a = [1, 2, 3, 4, 5];
+let slice = &a[1..3];	// This slice has the type &[i32], Used in mostly collections.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
