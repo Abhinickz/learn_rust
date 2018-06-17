@@ -198,7 +198,7 @@ let guess: u32 = match guess.trim().parse() {
 
 #	continue keyword must be inside a loop.
 
-#####	Common Programming Concepts		#####
+#####	Chapter: 3 Common Programming Concepts		#####
 
 ##	Differences Between Variables and Constants
 
@@ -473,7 +473,7 @@ fn main() {
 #	would be to use a Range, which is a type provided by the standard library
 #	that generates all numbers in sequence starting from one number and ending before another number.
 
-##	Understanding Ownership
+#####	Chapter: 4 Understanding ownership	#####
 
 #	Stack:
 #	The stack stores values in the order it gets them and removes the values in the opposite order.
@@ -718,7 +718,7 @@ let slice = &s[..];		//	Equal
 let a = [1, 2, 3, 4, 5];
 let slice = &a[1..3];	// This slice has the type &[i32], Used in mostly collections.
 
-
+####	Chapter: 5 Using Structs to Structure Related Data	####
 
 
 

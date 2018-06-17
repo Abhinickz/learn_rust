@@ -33,7 +33,6 @@ fn main() {
                         continue;
                     }
         };
-    }
 }
 cached!{
     FIB;
