@@ -496,7 +496,8 @@ fn main() {
 
 let s = String::from("hello");
 
-#	This type is allocated on the heap and as such is able to store an amount of text that is unknown to us at compile time.
+#	This type is allocated on the heap and,
+#	as such is able to store an amount of text that is unknown to us at compile time.
 
 #	The double colon ( :: ) is an operator that allows us to namespace this particular from
 #	function under the String type rather than using some sort of name like string_from.
@@ -532,8 +533,9 @@ let s1 = String::from("hello");
 let s2 = s1;
 
 #	Double free error:
-In above code s1 is moved to s2 due to rust out of scope logic,
-Otherwise if s2 = s1 both point to same memory location, rust will try to free the same memory known as Double free error.
+#	In above code s1 is moved to s2 due to rust out of scope logic,
+#	Otherwise if s2 = s1 both point to same memory location,
+#	rust will try to free the same memory known as Double free error.
 
 #	So, Instead of trying to copy the allocated memory (s2 = s1), Rust considers s1 to no longer be valid.
 #	Therefore, Rust doesn’t need to free anything when s1 goes out of scope.
@@ -556,7 +558,8 @@ error[E0382]: use of moved value: `s1`
 
 #	Ways Variables and Data Interact: Clone:
 
-#	If we do want to deeply copy the heap data of the String, not just the stack data, we can use a common method called clone.
+#	If we do want to deeply copy the heap data of the String,
+#	not just the stack data, we can use a common method called clone.
 
 let s1 = String::from("hello");
 let s2 = s1.clone();
@@ -569,10 +572,12 @@ println!("x = {}, y = {}", x, y);	//	OK: Because x lives on stack (integers that
 
 #	traits: more on this later.
 #	Copy: If a type has the Copy trait, an older variable is still usable after assignment.
-#	Drop: Rust won’t let us annotate a type with the Copy trait if the type, or any of its parts, has implemented the Drop trait.
+#	Drop: Rust won’t let us annotate a type with the Copy trait if the type,
+#	or any of its parts, has implemented the Drop trait.
 #	If the type needs something special to happen when the value goes out of scope and we add the Copy annotation to that type.
 
-#	General rule: Any group of simple scalar values can be Copy, and nothing that requires allocation or is some form of resource is Copy. 
+#	General rule: Any group of simple scalar values can be Copy,
+#	and nothing that requires allocation or is some form of resource is Copy. 
 
 #	Here are some of the types that are Copy:
 	#	All the integer types, such as u32.
@@ -587,7 +592,8 @@ println!("x = {}, y = {}", x, y);	//	OK: Because x lives on stack (integers that
 #	Passing a variable to a function will move or copy, just as assignment does.
 
 #	Meaning by example:
-#	When s is passed on to the function, It goes out of scope, So Ownership works on assigning a value to a variable as well as passing a value to function.
+#	When s is passed on to the function, It goes out of scope,
+#	So Ownership works on assigning a value to a variable as well as passing a value to function.
 
 let s = String::from("hello");  // s comes into scope.
 takes_ownership(s);             // s's value moves into the function...
@@ -623,8 +629,10 @@ fn calculate_length(s: String) -> (String, usize) {
 #	References and Borrowing
 
 #	references:
-#	These ampersands are references, and they allow you to refer to some value without taking ownership of it.
-#	Note: The opposite of referencing by using & is dereferencing, which is accomplished with the dereference operator, *.
+#	These ampersands are references, 
+#	and they allow you to refer to some value without taking ownership of it.
+#	Note: The opposite of referencing by using & is dereferencing,
+#	which is accomplished with the dereference operator, *.
 
 let s1 = String::from("hello");
 let s2 = calculate_length(&s1);	// &s1 reference to String Object s1.
@@ -635,11 +643,13 @@ fn calculate_length(s: &String) -> usize {	// the signature of the function uses
 }
 
 #	The &s1 syntax lets us create a reference that refers to the value of s1 but does not own it. 
-#	Because it does not own it, the value it points to will not be dropped when the reference goes out of scope.
+#	Because it does not own it.
+#	The value it points to will not be dropped when the reference goes out of scope.
 
 
 #	When functions have references as parameters instead of the actual values.
-#	We won’t need to return the values in order to give back ownership, because we never had ownership.
+#	We won’t need to return the values in order to give back ownership,
+#	because we never had ownership.
 
 
 #	references as function parameters : borrowing
@@ -655,9 +665,12 @@ fn calculate_length(s: &String) -> usize {	// the signature of the function uses
 change(&s); => change(&mut s); 
 && 
 fn change(some_string: &String) { => fn change(some_string: &mut String) { to modify the reference value.
-#	First, we had to change s to be mut. Then we had to create a mutable reference with &mut s and accept a mutable reference with some_string: &mut String.
+#	First, we had to change s to be mut. 
+#	Then we had to create a mutable reference with &mut s and 
+#	accept a mutable reference with some_string: &mut String.
 
-#	But mutable references have one big restriction: you can only have one mutable reference to a particular piece of data in a particular scope.
+#	But mutable references have one big restriction: 
+#	you can only have one mutable reference to a particular piece of data in a particular scope.
 
 let mut s = String::from("hello");
 
@@ -716,9 +729,137 @@ let slice = &s[..];		//	Equal
 
 #	Other slices example:
 let a = [1, 2, 3, 4, 5];
-let slice = &a[1..3];	// This slice has the type &[i32], Used in mostly collections.
+let slice = &a[1..3];	//	This slice has the type &[i32], Used in mostly collections.
 
 ####	Chapter: 5 Using Structs to Structure Related Data	####
+
+#	struct:
+#	A struct, or structure, is a custom data type that lets you name and package together,
+#	multiple related values that make up a meaningful group.
+#	A struct is like an object’s data attributes.
+
+#	Defining and Instantiating Structs:
+#	Structs are kind of similar to tuples (More like hash with tuples).
+#	except you’ll name each piece of struct data so it’s clear what the values mean.
+#	You don’t have to rely on the order of the data to specify or access the values of an instance.
+
+#	A User struct definition:
+struct User {
+	username: String,
+	email: String,
+	sign_in_count: u64,
+	timestamp: time::Tm,
+	active: bool,
+}
+
+#	To use a struct after we’ve defined it.
+#	we create an instance of that struct by specifying concrete values for each of the fields.
+#	Added a good example of struct in code_rust.txt (Search: //	Rust struct Example:) !
+
+#	To use a struct after we’ve defined it.
+#	We create an instance of that struct by specifying concrete values for each of the fields.
+
+#	Creating an instance of the User struct
+let mut user1 = User {
+    email: String::from("someone@example.com"),
+    username: String::from("someusername123"),
+    active: true,
+    sign_in_count: 1,
+	timestamp: test(),	//	Return type struct time::Tm.
+};
+
+fn test()-> time::Tm{
+    return time::now();
+}
+
+//	Change the value only if instance is defined as mutable.
+user1.email = String::from("anotheremail@example.com");
+
+#	Entire instance must be mutable. Even If we want to change just one field.
+#	Rust doesn’t allow us to mark only certain fields as mutable.
+
+#	As with any expression, we can construct a new instance of the struct,
+#	as the last expression in the function body to implicitly return that new instance. 
+fn build_user(email: String, username: String) -> User {
+    User {
+        email: email,
+        username: username,
+        active: true,
+        sign_in_count: 1,
+    }
+}
+
+#	Using the Field Init Shorthand when Variables and Fields Have the Same Name:
+fn build_user(email: String, username: String) -> User {
+	//	field init shorthand syntax
+    User {
+        email, //	Because the email field and the email parameter have the same name, we only need to write email rather than email: email.
+        username,
+        active: true,
+        sign_in_count: 1,
+    }
+}
+
+#	Creating Instances From Other Instances With Struct Update Syntax: Use
+#	It’s often useful to create a new instance of a struct that uses most of an old instance’s values but changes some.
+#	You’ll do this using struct update syntax.
+let user2 = User {
+    email: String::from("another@example.com"),
+    username: String::from("anotherusername567"),
+    active: user1.active,
+    sign_in_count: user1.sign_in_count,
+};
+
+//	The syntax .. specifies that the remaining fields not explicitly set should have the same value as the fields in the given instance.
+let user2 = User {
+    email: String::from("another@example.com"),
+    username: String::from("anotherusername567"),
+    ..user1	//	 struct update syntax
+};
+
+#	Tuple Structs without Named Fields to Create Different Types
+#	tuple structs:	look similar to tuples.
+
+#	Tuple structs have the added meaning the struct name provides but don’t have names associated with their fields,
+#	Rather, they just have the types of the fields.
+#	Tuple structs are useful when you want to give the whole tuple a name and make the tuple be a different type than other tuples,
+#	and naming each field as in a regular struct would be verbose or redundant.
+
+#	tuple structs Example:
+struct Color(i32, i32, i32);	// Define tuple structs
+struct Point(i32, i32, i32);	// Define tuple structs
+
+let black = Color(2, 0, 0);		// Creating tuple structs instance.
+let origin = Point(0, 0, 0);	// Creating tuple structs instance.
+
+#	Access tuple structs:
+println!(" black[0] {}", black.0 );	// OUTPUT: 2
+
+#	Unit-Like Structs Without Any Fields:
+#	unit type structs:
+#	You can also define structs that don’t have any fields!
+#	These are called unit-like structs because they behave similarly to (), the unit type. 
+#	Unit-like structs can be useful in situations in which you need to implement a trait on some type,
+#	but don’t have any data that you want to store in the type itself. 
+
+#	It’s possible for structs to store references to data owned by something else,
+#	but to do so requires the use of lifetimes.
+
+#	Lifetimes ensure that the data referenced by a struct is valid for as long as the struct is.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
