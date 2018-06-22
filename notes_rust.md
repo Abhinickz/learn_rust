@@ -1,6 +1,6 @@
 
 ```rust
-
+//❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚
 Rust Notes:
 
 $ sudo /home/abhasker/.cargo/bin/cargo update
@@ -197,7 +197,7 @@ let guess: u32 = match guess.trim().parse() {
 };
 
 #	continue keyword must be inside a loop.
-
+//❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚
 #####	Chapter: 3 Common Programming Concepts		#####
 
 ##	Differences Between Variables and Constants
@@ -473,6 +473,8 @@ fn main() {
 #	would be to use a Range, which is a type provided by the standard library
 #	that generates all numbers in sequence starting from one number and ending before another number.
 
+//❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚
+
 #####	Chapter: 4 Understanding ownership	#####
 
 #	Stack:
@@ -731,6 +733,10 @@ let slice = &s[..];		//	Equal
 let a = [1, 2, 3, 4, 5];
 let slice = &a[1..3];	//	This slice has the type &[i32], Used in mostly collections.
 
+
+//❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚
+
+
 ####	Chapter: 5 Using Structs to Structure Related Data	####
 
 #	struct:
@@ -932,6 +938,144 @@ fn main() {
 #   Methods can take ownership of self,
 #   borrow self immutably as we’ve done here,
 #   or borrow self mutably, just as they can any other parameter.
+
+#   The main benefit of using methods instead of functions,
+#   In addition to using method syntax and not having to repeat the type of self in every method’s signature, is for organization.
+
+#   Rust doesn’t have an equivalent to the -> operator;
+#   Instead, Rust has a feature called automatic referencing and dereferencing.
+#   Calling methods is one of the few places in Rust that has this behavior.
+
+#   When you call a method with object.something().
+#   Rust automatically adds in &, &mut, or * so object matches the signature of the method.
+
+#   Both are same:
+p1.distance(&p2);   //  looks much cleaner.
+(&p1).distance(&p2);
+
+#   Given the receiver and name of a method,
+#   Rust can figure out definitively whether the method is reading (&self),
+#   mutating (&mut self), or consuming (self). 
+
+#   Methods with More Parameters:
+
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };    //  Instance 1 of struct Rectangle.
+    let rect2 = Rectangle { width: 10, height: 40 };    //  Instance 2 of struct Rectangle.
+    let rect3 = Rectangle { width: 60, height: 45 };    //  Instance 3 of struct Rectangle.
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));   //  Calling other method: can_hold with different args &rect2.
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));   //  Calling other method: can_hold with different args &rect2.
+}
+
+//  Implementing the can_hold method on Rectangle that takes another Rectangle instance as a parameter.
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+    //  &self would be rect1 and other will be passed args.
+    fn can_hold(&self, other: &Rectangle) -> bool { // Method within the impl Rectangle.
+        self.width > other.width && self.height > other.height
+    }
+}
+
+#   Methods can take multiple parameters that we add to the signature after the self parameter,
+#   and those parameters work just like parameters in functions.
+
+#   Associated Functions
+#   Define functions within impl blocks that don’t take self as a parameter are called Associated Functions.
+
+#   They’re associated with the struct. They’re still functions, not methods.
+#   Because they don’t have an instance of the struct to work with.
+#   In String::from "from" is an associated function.
+
+#   Associated functions are often used for constructors that will return a new instance of the struct.
+//  This associated functions is used as constructor, 
+//  It will set the width and height of Rectangle while only one side is being passed.
+impl Rectangle {
+    fn square(size: u32) -> Rectangle {
+        Rectangle { width: size, height: size }
+    }
+}
+
+#   To call this associated function:
+#   we use the :: syntax with the struct name;
+let sq = Rectangle::square(3);  // Associated function calling example.
+
+#   This function is namespaced by the struct: the :: syntax is used for both associated functions and namespaces created by modules (later).
+
+
+#   Multiple impl Blocks:
+#   Each struct is allowed to have multiple impl blocks.
+#   Multiple impl blocks are useful in generic types and traits.
+//--------------------------------------------------------------------------------------------------
+//  Multiple impl Blocks Example:
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+//--------------------------------------------------------------------------------------------------
+
+
+//❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚❚
+
+
+####	Chapter: 6 Enums and Pattern Matching	####
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
