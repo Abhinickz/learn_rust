@@ -598,7 +598,7 @@ println!("x = {}, y = {}", x, y);	//	OK: Because x lives on stack (integers that
 let s = String::from("hello");  // s comes into scope.
 takes_ownership(s);             // s's value moves into the function...
 								// ... and so is no longer valid here.
-println!("{}", s)				// NOT OK
+println!("{}", s)				// ERROR:   NOT OK
 
 
 #	Return Values and Scope:
@@ -619,8 +619,8 @@ fn gives_ownership() -> String {	// gives_ownership will move its, return value 
 #	It’s possible to return multiple values using a tuple:
 
 fn calculate_length(s: String) -> (String, usize) {
-    let length = s.len(); // len() returns the length of a String
-    (s, length)
+    let length = s.len();   // len() returns the length of a String
+    (s, length)             // Return the tuple value containing both values.
 }
 
 #	Too much work: Luckily for us, Rust has a feature for this concept, called references.
@@ -628,8 +628,8 @@ fn calculate_length(s: String) -> (String, usize) {
 
 #	References and Borrowing
 
-#	references:
-#	These ampersands are references, 
+#	References:
+#	These ampersands are references (&s1), 
 #	and they allow you to refer to some value without taking ownership of it.
 #	Note: The opposite of referencing by using & is dereferencing,
 #	which is accomplished with the dereference operator, *.
@@ -754,15 +754,15 @@ struct User {
 
 #	To use a struct after we’ve defined it.
 #	we create an instance of that struct by specifying concrete values for each of the fields.
-#	Added a good example of struct in code_rust.txt (Search: //	Rust struct Example:) !
+#	Added a good example of struct in code_rust.txt (Search:    //	Rust struct Example:) !
 
 #	To use a struct after we’ve defined it.
 #	We create an instance of that struct by specifying concrete values for each of the fields.
 
 #	Creating an instance of the User struct
 let mut user1 = User {
-    email: String::from("someone@example.com"),
-    username: String::from("someusername123"),
+    email: String::from("Abhinickz@example.com"),
+    username: String::from("Abhinickz"),
     active: true,
     sign_in_count: 1,
 	timestamp: test(),	//	Return type struct time::Tm.
@@ -773,7 +773,7 @@ fn test()-> time::Tm{
 }
 
 //	Change the value only if instance is defined as mutable.
-user1.email = String::from("anotheremail@example.com");
+user1.email = String::from("Abhinickz@example.com");
 
 #	Entire instance must be mutable. Even If we want to change just one field.
 #	Rust doesn’t allow us to mark only certain fields as mutable.
@@ -814,7 +814,7 @@ let user2 = User {
 let user2 = User {
     email: String::from("another@example.com"),
     username: String::from("anotherusername567"),
-    ..user1	//	 struct update syntax
+    ..user1	//	 struct update syntax, Other values will be fetched from user1 instance of User struct.
 };
 
 #	Tuple Structs without Named Fields to Create Different Types
@@ -847,48 +847,91 @@ println!(" black[0] {}", black.0 );	// OUTPUT: 2
 
 #	Lifetimes ensure that the data referenced by a struct is valid for as long as the struct is.
 
+#   Adding Useful Functionality with Derived Traits
+
+#   Trying to print struct with normal println macro {} will give this error.
+println!("rect1 is {}", rect1); // NOT OK: ERROR: error[E0277]: the trait bound `Rectangle: std::fmt::Display` is not satisfied.
+                                //  `Rectangle` cannot be formatted with the default formatter; try using
+                                //  `:?` instead if you are using a format string.
+
+#   By default, curly brackets tell println! to use formatting known as Display: output intended for direct end user consumption.
 
 
+#   Putting the specifier :? inside the curly brackets {} tells println! we want to use an output format called Debug.
 
+#   Debug trait:
+#   Debug is a trait that enables us to print our struct in a way that is useful for developers so we can see its value while we’re debugging our code.
 
+println!("rect1 is {:?}", rect1);   //  error[E0277]: the trait bound `Rectangle: std::fmt::Debug` is not satisfied.
+                                    // `Rectangle` cannot be formatted using `:?`; if it is defined in your
+                                    // crate, add `#[derive(Debug)]` or manually implement it.
 
+#   Rust does include functionality to print out debugging information,
+#   But we have to explicitly opt in to make that functionality available for our struct.
 
+#   Add the annotation #[derive(Debug)] just before the struct definition
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
 
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };
 
+    println!("rect1 is {:?}", rect1);
+    //  OUTPUT: rect1 is Rectangle { width: 30, height: 50 }.
+    println!("rect1 is {:#?}", rect1);
+    /*  OUTPUT:
+    rect1 is Rectangle {
+        width: 30,
+        height: 50
+    }
+    */
+}
 
+#   Method Syntax
+#   Methods are similar to functions:
+    #   They’re declared with the fn keyword and their name.
+    #   They can have parameters and a return value.
+    #   They contain some code that is run when they’re called from somewhere else.
+#   Methods are different from functions:
+    #   They’re defined within the context of a struct (or an enum or a trait object).
+    #   Their first parameter is always self, which represents the instance of the struct the method is being called on (Kind of Perl Methods).
+#
 
+#   Defining Methods:
 
+#   To define the function within the context of Rectangle, we start an impl (implementation) block.
+#   The method syntax =>[rect1.area()] goes after an instance: we add a dot followed by the method name, parentheses, and any arguments.
 
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
 
+//  Implement the impl (Implementation) block wth the struct name.
+impl Rectangle {
+    //  &self instead of rectangle: &Rectangle, because rust knows the type of self is Rectangle.
+    //  If we wanted to change the instance that we’ve called the method on as part of what the method does, we’d use &mut self as the first parameter.
+    fn area(&self) -> u32 { //  Signature of area.
+        self.width * self.height
+    }
+}
 
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };
 
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()    //  Method syntax to call area.
+    );
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#   Methods can take ownership of self,
+#   borrow self immutably as we’ve done here,
+#   or borrow self mutably, just as they can any other parameter.
 
 
 
