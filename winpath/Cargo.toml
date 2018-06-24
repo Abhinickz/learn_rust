@@ -1,0 +1,8 @@
+[package]
+name = "winpath"
+version = "0.1.0"
+authors = ["Abhinickz <Abhinickz6@gmail.com>"]
+
+[dependencies]
+regex = "*"
+lazy_static = "*"
