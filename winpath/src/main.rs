@@ -2,7 +2,8 @@ extern crate regex;
 
 use regex::Regex;
 use std::env;
-use std::io;
+// use std::io;
+use std::io::{self, Write};
 
 #[macro_use]
 extern crate lazy_static;
@@ -46,7 +47,7 @@ fn main() {
         }
 
         input = str::replace(&input, "/", "\\");
-        println!("\"{}\"", input);
+        writeln!(io::stdout(), "\"{}\"", input);
     }
 }
 /* Perl Program:
