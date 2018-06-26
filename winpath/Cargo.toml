@@ -1,6 +1,6 @@
 [package]
 name = "winpath"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Abhinickz <Abhinickz6@gmail.com>"]
 
 [dependencies]

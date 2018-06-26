@@ -2,19 +2,18 @@ extern crate regex;
 
 use regex::Regex;
 use std::env;
-// use std::io;
 use std::io::{self, Write};
 
 #[macro_use]
 extern crate lazy_static;
 
 lazy_static! {
-    pub static ref REGEX_PATH_WITH_DOT: Regex = Regex::new(r#"^\."#).unwrap();
+    pub static ref REGEX_PATH_WITH_DOT: Regex = Regex::new(r#"^\.|\."#).unwrap();
     pub static ref REGEX_PATH_WITHOUT_DOT: Regex = Regex::new(r#"/mnt/(\w)/"#).unwrap();
 }
 
 fn main() {
-    let path = env::current_dir().unwrap();
+    let cwd = env::current_dir().unwrap();
     loop {
         let mut input = String::new();
         io::stdin()
@@ -28,7 +27,7 @@ fn main() {
 
         if REGEX_PATH_WITH_DOT.is_match(&input) {
             input = str::replace(&input, "./", "");
-            input = format!("{}\\{}", path.display(), input);
+            input = format!("{}\\{}", cwd.display(), input);
             input = format!(
                 "{}",
                 REGEX_PATH_WITHOUT_DOT.replace_all(
