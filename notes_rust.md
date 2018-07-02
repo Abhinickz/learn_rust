@@ -1029,48 +1029,126 @@ impl Rectangle {
 
 ####	Chapter: 6 Enums and Pattern Matching	####
 
+##   Enumerations:
+#   Enumerations, also referred to as enums.
+#   Enums allow you to define a type by enumerating its possible values.
+
+#   Option enum, which expresses that a value can be either something or nothing.
+
+#   We can enumerate all possible values, which is where enumeration gets its name.
+#   But Only one kind of value at a same time.
 
 
+//  Enum definition: IpAddrKind is name of this enum.
+enum IpAddrKind {
+    V4, //  Possible variants of IpAddrKind enum.
+    V6, //  Possible variants of IpAddrKind enum.
+}   //  IpAddrKind is a custom data type.
 
+#   Above enum IpAddrKind variants does not associate any data with it. means it does not have a value at a time.
 
+# Giving enum values:
+#   Enum Values:
 
+// Create instances of the enum IpAddrKind.
+let four = IpAddrKind::V4;  //  variants of the enum are namespaced under its identifier,
+let six = IpAddrKind::V6;   //  and we use a double colon to separate the two.
 
+#   Now both values IpAddrKind::V4 and IpAddrKind::V6 are of the same type:
+#   So receiving these to function requires like this:
+fn route(ip_type: IpAddrKind) { }   //  receiving enum variants to fn route.
 
+#   So calling like this won't affect, because of the same type of enum variants.
+route(IpAddrKind::V4);  // Passing enum variants as arguments to fn route.
+route(IpAddrKind::V6);
 
+#   Storing the data and IpAddrKind variant of an IP address using a struct:
+enum IpAddrKind {
+    V4,
+    V6,
+}
+struct IpAddr {
+    kind: IpAddrKind,                       //  Define the field kind as enum IpAddrKind
+    address: String,
+}
+let home = IpAddr {                         // Struct variable initialization of kind IpAddrKind enum V4 variant.
+    kind: IpAddrKind::V4,                   // 
+    address: String::from("127.0.0.1"),
+};
+let loopback = IpAddr {
+    kind: IpAddrKind::V6,                   // Struct variable initialization of kind IpAddrKind enum V6 variant.
+    address: String::from("::1"),
+};
 
+#   So in above example struct has the enum data associated with it.
 
+#   Rather than an enum inside a struct, by putting data directly into each enum variant.
+enum IpAddr {
+    V4(String),
+    V6(String),
+}
+let home = IpAddr::V4(String::from("127.0.0.1"));
+let loopback = IpAddr::V6(String::from("::1"));
+#   We attach data to each variant of the enum directly, so there is no need for an extra struct.
 
+#    Advantage to using an enum rather than a struct:
+#   Each variant can have different types and amounts of associated data like in below example:
+enum IpAddr {
+    V4(u8, u8, u8, u8),     //  This will have four numeric components that will have values between 0 and 255.
+    V6(String),             //  V6 addresses as one String.
+}
+let home = IpAddr::V4(127, 0, 0, 1);
+let loopback = IpAddr::V6(String::from("::1"));
 
+#   Standard Library Example:
+struct Ipv4Addr {
+    // --snip--
+}
+struct Ipv6Addr {
+    // --snip--
+}
+enum IpAddr {
+    V4(Ipv4Addr),
+    V6(Ipv6Addr),
+}
 
+#   In above enum V4 is a type of struct Ipv4Addr, and V6 is type of struct Ipv6Addr.
 
+# enum with wide variety of types embedded in its variants:
+//  A Message enum whose variants each store different amounts and types of values
+enum Message {
+    Quit,                               //  Quit has no data associated with it at all.
+    Move { x: i32, y: i32 },            //  Move includes an anonymous struct inside it.
+    Write(String),                      //  Write includes a single String.
+    ChangeColor(i32, i32, i32),         //  ChangeColor includes three i32 values.
+}
 
+#   Same data by defining different kind of structs.
+struct QuitMessage; // unit struct
+struct MoveMessage {
+    x: i32,
+    y: i32,
+}
+struct WriteMessage(String); // tuple struct
+struct ChangeColorMessage(i32, i32, i32); // tuple struct
 
+#   Problem using these different structs is that 
+#   We won’t be able to define a function fn which takes all of these message kind.
+#   As we could with the Message enum defined above.
 
+#   Similarity between enums and structs: 
+    #   Both can have method with the help of impl (implementation block).
+#
 
+// Example using enum Message defined above.
+impl Message {
+    fn call(&self) {
+        // method body would be defined here
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let m = Message::Write(String::from("hello"));
+m.call();   //  Calling the method call from the variable m.
 
 
 
