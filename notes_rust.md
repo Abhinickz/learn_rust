@@ -119,14 +119,16 @@ use rand::Rng;
 
 #	The gen_range method takes two numbers as arguments and generates a random number between them.
 #	It’s inclusive on the lower bound but exclusive on the upper bound
-let secret_number = rand::thread_rng().gen_range(1, 5);
+let secret_number = rand::thread_rng().gen_range(1, 5); // will generate number from 1 to 4
 
-
+// match is an expression
 match guess.cmp(&secret_number) {		// &secret_number refers to secret_number reference.
 	Ordering::Less => println!("Too small!"),
 	Ordering::Greater => println!("Too big!"),
 	Ordering::Equal => println!("You win!"),
 }
+
+#   A match expression is made up of arms.
 
 #	Ordering is another enum, but the
 #	variants for Ordering are Less, Greater, and Equal.
@@ -138,10 +140,12 @@ match guess.cmp(&secret_number) {		// &secret_number refers to secret_number ref
 #	from the call to cmp with the values in guess and secret_number.
 
 #	Interger Constraint on guess input, Otherwise will get an error : "Please type a number!"
-let guess: u32 = guess.trim().parse().expect("Please type a number!");
+let guess: u32 = guess.trim()
+                    .parse()
+                    .expect("Please type a number!");
 
-let mut secret_number = String::new();					//	with reference type `&std::string::String`
-let secret_number = "Hello";							//	with reference type `&&str`
+let mut secret_string = String::new();					//	with reference type `&std::string::String`
+let secret_string = "Hello";							//	with reference type `&str`
 
 ####	Rust Debugging:
 #	As far as debugging goes, a little trick:
@@ -219,11 +223,12 @@ const MAX_POINTS: u32 = 100_000_101;	// "_" is used here to increase readbility 
 ##	Shadowing
 #	Re-declare a variable using let again to shadow the previuos type & value of data type.
 
-#	Shadowing is different than marking a variable as mut. because??
+#	Shadowing is different than marking a variable as mut.
 #	We’ll get a compile-time error if we accidentally try to reassign to any variable without using the let keyword.
 
 #	The other difference between mut and shadowing is that because we’re effectively creating a new variable when we use the let keyword again.
 #	We can change the type of the value but reuse the same name. saves us from the heckle of using temp name.
+#	We can declare the variable as mut again after shadowing.
 
 #	Shadowing thus spares us from having to come up with different names.
 let spaces = " ";
@@ -261,6 +266,7 @@ Length		Signed		Unsigned
 16-bit 		i16 		u16
 32-bit 		i32 		u32
 64-bit 		i64 		u64
+128-bit 	i128 		u128
 arch 		isize 		usize
 
 #	Integer literals Form
@@ -290,7 +296,7 @@ let t = true;
 let f: bool = false; // with explicit type annotation
 
 #	Character Type:
-#	char type is specified with '' single quotes, While String uses "" double quotes.
+#	char type (char literal) is specified with '' single quotes, While String (string literal) uses "" double quotes.
 let tick  = '✔';
 let heart = '❤';
 
@@ -304,7 +310,7 @@ let heart = '❤';
 
 #	The Tuple Type:
 #	A tuple is a general way of grouping together some number of other values with a variety of types into one compound type.
-let tup: (i32, f64, u8) = (500, 6.4, 1);	// tup single compound variable.
+let tup: (i32, f64, u8, char) = (500, 6.4, 'C', "string");	// tup single compound variable.
 #	We create a tuple by writing a comma-separated list of values inside parentheses.
 #	Each position in the tuple has a type.
 #	Types of the different values in the tuple don’t have to be the same.
@@ -331,8 +337,23 @@ let a = [1, 2, 3, 4, 5];
 
 #	Arrays are useful when you want your data allocated on the stack rather than the heap (perfomance gain.)
 
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+#   i32 is the type of each element. After the semicolon, the number 5 indicates the element contains five items.
+
+// Both are equal
+let a = [3; 5];                 // More concise way.
+let a = [3, 3, 3, 3, 3];
+
 #	Array elements access:
-let first  = a[0];
+let first  = a[0];ain() {
+    let a = [1, 2, 3, 4, 5];
+    let index = 10;
+
+    let element = a[index];
+
+    println!("The value of element is: {}", element);
+}
+Running this code
 let second = a[1];
 
 let index   = 10;
@@ -393,6 +414,13 @@ fn five() -> i32 {	// fn fn_name() -> return_data_type { }
 fn foo(x: i32) -> i32 { x }
 let x: fn(i32) -> i32 = foo;
 #	In this case, x is a ‘function pointer’ to a function that takes an i32 and returns an i32.
+
+
+```rust
+    fn foo(x: i32) -> i32 { x }
+    let x: fn(i32) -> i32 = foo;
+    println!("test: {:#?}", x(1));
+```
 
 #	When statements don’t evaluate to a value, which is expressed by (), the empty tuple.
 
